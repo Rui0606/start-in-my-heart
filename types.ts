@@ -4,6 +4,7 @@ export enum AppStage {
   MYTHS = 'MYTHS',
   SCENARIOS = 'SCENARIOS',
   QUIZ = 'QUIZ',
+  SURVEY = 'SURVEY',
   BADGE_MAKER = 'BADGE_MAKER',
   AI_TUTOR = 'AI_TUTOR'
 }

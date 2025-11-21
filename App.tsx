@@ -5,6 +5,7 @@ import { ProgressBar } from './components/ProgressBar';
 import { MythGame } from './components/MythGame';
 import { ScenarioGame } from './components/ScenarioGame';
 import { QuizView } from './components/QuizView';
+import { SurveyView } from './components/SurveyView';
 import { BadgeMaker } from './components/BadgeMaker';
 import { Button } from './components/Button';
 import { AiTutor } from './components/AiTutor';
@@ -120,7 +121,8 @@ const App: React.FC = () => {
                 {stage === AppStage.INTRO && <IntroView />}
                 {stage === AppStage.MYTHS && <MythGame onComplete={() => advanceStage(AppStage.SCENARIOS)} />}
                 {stage === AppStage.SCENARIOS && <ScenarioGame onComplete={() => advanceStage(AppStage.QUIZ)} />}
-                {stage === AppStage.QUIZ && <QuizView onPass={() => advanceStage(AppStage.BADGE_MAKER)} />}
+                {stage === AppStage.QUIZ && <QuizView onPass={() => advanceStage(AppStage.SURVEY)} />}
+                {stage === AppStage.SURVEY && <SurveyView onComplete={() => advanceStage(AppStage.BADGE_MAKER)} />}
                 {stage === AppStage.BADGE_MAKER && <BadgeMaker />}
             </div>
         </div>

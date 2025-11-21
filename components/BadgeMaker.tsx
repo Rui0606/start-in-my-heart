@@ -28,10 +28,13 @@ export const BadgeMaker: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="text-center mb-8">
-        <h2 className="text-4xl font-bold text-indigo-900 mb-2">
-            製作你的「星心相印」徽章
+      <div className="text-center mb-8 bg-indigo-50 p-8 rounded-3xl border-2 border-indigo-100">
+        <h2 className="text-3xl md:text-4xl font-bold text-indigo-900 mb-4">
+            恭喜你成功完成挑戰，出示本頁面
         </h2>
+        <h3 className="text-xl md:text-2xl font-bold text-indigo-700 mb-2">
+            製作你的「星心相印」徽章
+        </h3>
         <p className="text-gray-500">Create Your "Star in My Heart" Badge</p>
       </div>
       

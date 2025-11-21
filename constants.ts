@@ -1,6 +1,10 @@
 
 import { Myth, QuizQuestion, Scenario } from './types';
 
+// 重要：請將此處的連結替換為您的 Google 表單連結
+// IMPORTANT: Replace this link with your actual Google Form URL
+export const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScEjtLsZjobQyOZORZgvXB3U1KuucFsb-9TOWqibwhAT1c0Rg/viewform?usp=header"; 
+
 export const PDF_CONTEXT = `
 You are a helpful assistant explaining Autism Spectrum Disorder (ASD).
 Please answer in Traditional Chinese, English, and Vietnamese.
@@ -222,38 +226,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     options: [
       { zh: "可以，抗生素可以治癒", en: "Yes, antibiotics cure it", vi: "Có, thuốc kháng sinh chữa khỏi được" },
       { zh: "不，目前無法治癒，但藥物可緩解症狀", en: "No, there is currently no cure, but meds can help with symptoms", vi: "Không, hiện chưa có cách chữa trị, nhưng thuốc có thể giúp giảm triệu chứng" },
-      { zh: "可以，透過手術", en: "Yes, with surgery", vi: "Được, bằng phẫu thuật" },
-      { zh: "只有草藥有效", en: "Only herbal medicine works", vi: "Chỉ có thuốc thảo dược mới có tác dụng" }
-    ],
-    correctIndex: 1
-  },
-  {
-    id: 4,
-    question: {
-      zh: "自閉症的成因是...",
-      en: "Autism is caused by...",
-      vi: "Bệnh tự kỷ là do..."
-    },
-    options: [
-      { zh: "父母教養不當", en: "Bad parenting", vi: "Nuôi dạy con cái tồi" },
-      { zh: "疫苗", en: "Vaccines", vi: "Vắc xin" },
-      { zh: "神經心理功能的異常", en: "Abnormalities in neuropsychological functioning", vi: "Những bất thường trong chức năng tâm lý thần kinh" },
-      { zh: "吃太多糖", en: "Eating too much sugar", vi: "Ăn quá nhiều đường" }
-    ],
-    correctIndex: 2
-  },
-  {
-    id: 5,
-    question: {
-      zh: "如果慣例被打破，自閉症患者可能會感到...",
-      en: "If a routine is disrupted, a person with autism might feel...",
-      vi: "Nếu một thói quen bị phá vỡ, người tự kỷ có thể cảm thấy..."
-    },
-    options: [
-      { zh: "興奮和快樂", en: "Excited and happy", vi: "Hào hứng và vui vẻ" },
-      { zh: "焦慮或不安", en: "Anxious or upset", vi: "Lo lắng hoặc buồn bã" },
-      { zh: "無動於衷", en: "Indifferent", vi: "Thờ ơ" },
-      { zh: "想睡覺", en: "Sleepy", vi: "Buồn ngủ" }
+      { zh: "可以，透過手術", en: "Yes, with surgery", vi: "Được, bằng" }
     ],
     correctIndex: 1
   }

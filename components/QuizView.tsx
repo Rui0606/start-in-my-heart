@@ -47,11 +47,11 @@ export const QuizView: React.FC<QuizViewProps> = ({ onPass }) => {
           你已經證明了你對自閉症譜系障礙的了解。
         </p>
         <p className="text-sm text-gray-400 mb-8">
-          You are now eligible to create your own Star Badge!
+          You passed the quiz! Next, please fill out a short survey to unlock your badge.
         </p>
         
         <Button onClick={onPass} size="lg" variant="secondary" className="animate-pulse">
-          開啟徽章製作器 (Make Badge) &rarr;
+          下一步：填寫回饋問卷 (Next: Survey) &rarr;
         </Button>
       </div>
     );
