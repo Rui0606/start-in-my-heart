@@ -9,13 +9,21 @@ import { SurveyView } from './components/SurveyView';
 import { BadgeMaker } from './components/BadgeMaker';
 import { Button } from './components/Button';
 import { AiTutor } from './components/AiTutor';
+import { useSound } from './contexts/SoundContext';
 
 const App: React.FC = () => {
   const [stage, setStage] = useState<AppStage>(AppStage.INTRO);
   const [showAiTutor, setShowAiTutor] = useState(false);
+  const { isMuted, toggleMute, playSound } = useSound();
 
   const advanceStage = (nextStage: AppStage) => {
+    playSound('click');
     setStage(nextStage);
+  };
+
+  const handleStageChange = (newStage: AppStage) => {
+    playSound('click');
+    setStage(newStage);
   };
 
   const IntroView = () => (
@@ -97,13 +105,20 @@ const App: React.FC = () => {
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setStage(AppStage.INTRO)}>
+            <div className="flex items-center space-x-2 cursor-pointer" onClick={() => handleStageChange(AppStage.INTRO)}>
                 <span className="text-2xl">🌟</span>
                 <span className="font-bold text-indigo-900 text-lg hidden sm:block">星心相印 (Stars in My Heart)</span>
             </div>
             <div className="flex items-center gap-4">
+                 <button
+                    onClick={toggleMute}
+                    className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors"
+                    title={isMuted ? "Unmute Sound" : "Mute Sound"}
+                 >
+                    {isMuted ? '🔇' : '🔊'}
+                 </button>
                  <button 
-                    onClick={() => setShowAiTutor(!showAiTutor)}
+                    onClick={() => { playSound('click'); setShowAiTutor(!showAiTutor); }}
                     className="text-sm font-bold text-indigo-600 hover:bg-indigo-50 px-3 py-1 rounded-lg transition-colors"
                  >
                     {showAiTutor ? '關閉 (Close)' : 'AI 導師 (AI Tutor)'}
@@ -115,7 +130,7 @@ const App: React.FC = () => {
       <main className="flex-grow p-4 md:p-8 relative">
         {/* Main Content */}
         <div className={`transition-all duration-300 ${showAiTutor ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
-            <ProgressBar currentStage={stage} setStage={setStage} />
+            <ProgressBar currentStage={stage} setStage={handleStageChange} />
 
             <div className="mt-8">
                 {stage === AppStage.INTRO && <IntroView />}

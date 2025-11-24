@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { SCENARIOS } from '../constants';
 import { Button } from './Button';
 import { TextDisplay } from './TextDisplay';
+import { useSound } from '../contexts/SoundContext';
 
 interface ScenarioGameProps {
   onComplete: () => void;
@@ -13,6 +14,7 @@ export const ScenarioGame: React.FC<ScenarioGameProps> = ({ onComplete }) => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
+  const { playSound } = useSound();
 
   const currentScenario = SCENARIOS[currentIndex];
 
@@ -22,10 +24,14 @@ export const ScenarioGame: React.FC<ScenarioGameProps> = ({ onComplete }) => {
     
     if (currentScenario.options[index].isCorrect) {
         setScore(prev => prev + 1);
+        playSound('correct');
+    } else {
+        playSound('wrong');
     }
   };
 
   const handleNext = () => {
+    playSound('click');
     if (currentIndex < SCENARIOS.length - 1) {
       setCurrentIndex(prev => prev + 1);
       setSelectedOptionIndex(null);
@@ -34,24 +40,64 @@ export const ScenarioGame: React.FC<ScenarioGameProps> = ({ onComplete }) => {
     }
   };
 
+  React.useEffect(() => {
+    if (isCompleted) {
+        if (score === SCENARIOS.length) {
+            playSound('pass');
+        } else {
+            playSound('wrong');
+        }
+    }
+  }, [isCompleted, score, playSound]);
+
+  const handleRetry = () => {
+    playSound('click');
+    setCurrentIndex(0);
+    setSelectedOptionIndex(null);
+    setScore(0);
+    setIsCompleted(false);
+  };
+
   if (isCompleted) {
+    const isPerfect = score === SCENARIOS.length;
+
     return (
       <div className="text-center py-12 bg-white rounded-3xl shadow-xl p-8">
-        <div className="mb-6 text-6xl">🤝</div>
+        <div className="mb-6 text-6xl">
+             {isPerfect ? '🤝' : '💬'}
+        </div>
         <h2 className="text-3xl font-bold text-indigo-900 mb-2">
-            溝通技巧升級！
+             {isPerfect ? "溝通技巧升級！" : "練習未完成"}
         </h2>
-        <p className="text-gray-500 mb-6">Communication Skills Upgraded!</p>
+        <p className="text-gray-500 mb-6">
+            {isPerfect ? "Communication Skills Upgraded!" : "Practice Not Complete"}
+        </p>
         
-        <div className="bg-indigo-50 p-6 rounded-2xl inline-block mb-8">
+        <div className={`p-6 rounded-2xl inline-block mb-8 ${isPerfect ? 'bg-indigo-50' : 'bg-red-50'}`}>
             <div className="text-lg text-gray-600 mb-2">你的得分 / Your Score</div>
-            <div className="text-5xl font-black text-indigo-600">{score} / {SCENARIOS.length}</div>
+            <div className={`text-5xl font-black ${isPerfect ? 'text-indigo-600' : 'text-red-500'}`}>
+                {score} / {SCENARIOS.length}
+            </div>
         </div>
 
+        {!isPerfect && (
+            <p className="text-gray-500 mb-8 max-w-md mx-auto">
+                請確保你選擇了對自閉症朋友最友善的回應，請再試一次！
+                <br/>
+                <span className="text-sm">Please ensure you choose the most supportive response. Try again!</span>
+            </p>
+        )}
+
         <div>
-             <Button onClick={onComplete} size="lg" variant="primary">
-             進行最終測驗 (Final Quiz) &rarr;
-            </Button>
+             {isPerfect ? (
+                <Button onClick={onComplete} size="lg" variant="primary">
+                進行最終測驗 (Final Quiz) &rarr;
+                </Button>
+             ) : (
+                <Button onClick={handleRetry} size="lg" variant="outline">
+                重新練習 (Retry) ↺
+                </Button>
+             )}
         </div>
       </div>
     );
@@ -138,7 +184,7 @@ export const ScenarioGame: React.FC<ScenarioGameProps> = ({ onComplete }) => {
           {selectedOptionIndex !== null && (
             <div className="mt-6 pt-4 border-t border-gray-100">
                <Button onClick={handleNext} className="w-full shadow-none">
-                 {currentIndex === SCENARIOS.length - 1 ? '完成練習 (Complete)' : '下一題 (Next)'}
+                 {currentIndex === SCENARIOS.length - 1 ? '查看結果 (See Results)' : '下一題 (Next)'}
                </Button>
             </div>
           )}

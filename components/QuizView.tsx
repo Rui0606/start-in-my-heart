@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { QUIZ_QUESTIONS } from '../constants';
 import { Button } from './Button';
 import { TextDisplay } from './TextDisplay';
+import { useSound } from '../contexts/SoundContext';
 
 interface QuizViewProps {
   onPass: () => void;
@@ -11,9 +12,11 @@ interface QuizViewProps {
 export const QuizView: React.FC<QuizViewProps> = ({ onPass }) => {
   const [answers, setAnswers] = useState<number[]>(new Array(QUIZ_QUESTIONS.length).fill(-1));
   const [submitted, setSubmitted] = useState(false);
+  const { playSound } = useSound();
 
   const handleAnswer = (qIndex: number, optionIndex: number) => {
     if (submitted) return;
+    playSound('click');
     const newAnswers = [...answers];
     newAnswers[qIndex] = optionIndex;
     setAnswers(newAnswers);
@@ -28,11 +31,20 @@ export const QuizView: React.FC<QuizViewProps> = ({ onPass }) => {
   };
 
   const handleSubmit = () => {
+    const score = calculateScore();
+    const passed = score === 100;
+    
     setSubmitted(true);
+    
+    if (passed) {
+        playSound('victory');
+    } else {
+        playSound('wrong');
+    }
   };
 
   const score = submitted ? calculateScore() : 0;
-  const passed = score >= 90;
+  const passed = score === 100;
 
   if (submitted && passed) {
     return (
@@ -47,7 +59,7 @@ export const QuizView: React.FC<QuizViewProps> = ({ onPass }) => {
           你已經證明了你對自閉症譜系障礙的了解。
         </p>
         <p className="text-sm text-gray-400 mb-8">
-          You passed the quiz! Next, please fill out a short survey to unlock your badge.
+          You passed the quiz with a perfect score! Next, please fill out a short survey.
         </p>
         
         <Button onClick={onPass} size="lg" variant="secondary" className="animate-pulse">
@@ -67,14 +79,14 @@ export const QuizView: React.FC<QuizViewProps> = ({ onPass }) => {
         <div className="text-5xl font-black text-gray-400 mb-4">{score}%</div>
         
         <p className="text-lg text-gray-600 mb-2">
-            你需要 90% 以上的分數才能解鎖徽章。
+            你需要 100% 的分數才能解鎖徽章。
         </p>
         <p className="text-sm text-gray-400 mb-8">
-           Review the characteristics and try again.
+           Review the characteristics and try again to get a perfect score.
         </p>
 
-        <Button onClick={() => { setSubmitted(false); setAnswers(new Array(QUIZ_QUESTIONS.length).fill(-1)); }} variant="outline">
-          重試 (Retry)
+        <Button onClick={() => { playSound('click'); setSubmitted(false); setAnswers(new Array(QUIZ_QUESTIONS.length).fill(-1)); }} variant="outline">
+          重試 (Retry) ↺
         </Button>
       </div>
     );
@@ -86,7 +98,7 @@ export const QuizView: React.FC<QuizViewProps> = ({ onPass }) => {
          <h2 className="text-3xl font-bold mb-2">認證測驗</h2>
          <div className="text-indigo-200">Certification Quiz</div>
          <p className="opacity-80 mt-4 text-sm bg-indigo-800 inline-block px-3 py-1 rounded-full">
-            得分 90% 以上即可解鎖獎勵！ (Score 90% to unlock reward)
+            得分 100% 即可解鎖獎勵！ (Score 100% to unlock reward)
          </p>
       </div>
       

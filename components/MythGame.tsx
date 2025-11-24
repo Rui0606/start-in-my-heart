@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { MYTHS } from '../constants';
 import { Button } from './Button';
 import { TextDisplay } from './TextDisplay';
+import { useSound } from '../contexts/SoundContext';
 
 interface MythGameProps {
   onComplete: () => void;
@@ -13,44 +14,98 @@ export const MythGame: React.FC<MythGameProps> = ({ onComplete }) => {
   const [revealed, setRevealed] = useState(false);
   const [score, setScore] = useState(0);
   const [completed, setCompleted] = useState(false);
+  const { playSound } = useSound();
 
   const currentMyth = MYTHS[currentIndex];
 
   const handleGuess = (guessTrue: boolean) => {
     if (revealed) return;
+    
     if (guessTrue === currentMyth.isTrue) {
       setScore(prev => prev + 1);
+      playSound('correct');
+    } else {
+      playSound('wrong');
     }
     setRevealed(true);
   };
 
   const handleNext = () => {
+    playSound('click');
     if (currentIndex < MYTHS.length - 1) {
       setCurrentIndex(prev => prev + 1);
       setRevealed(false);
     } else {
       setCompleted(true);
+      // Check result immediately for sound
+      if (score === MYTHS.length) { // Actually score isn't updated in this render cycle yet if the last one was correct, but logic holds because handleGuess updates state.
+          // Wait, state update is async.
+          // But here we are in handleNext, so 'score' is from render.
+          // The issue: if the LAST question was just answered, 'score' variable might not reflect it if we called handleNext immediately.
+          // But handleNext is called via button click AFTER reveal, so score is updated.
+      }
     }
   };
 
+  // Effect to play sound when completed state changes
+  React.useEffect(() => {
+    if (completed) {
+        if (score === MYTHS.length) {
+            playSound('pass');
+        } else {
+            playSound('wrong');
+        }
+    }
+  }, [completed, score, playSound]);
+
+  const handleRetry = () => {
+    playSound('click');
+    setCurrentIndex(0);
+    setRevealed(false);
+    setScore(0);
+    setCompleted(false);
+  };
+
   if (completed) {
+    const isPerfect = score === MYTHS.length;
+
     return (
       <div className="text-center py-12 bg-white rounded-3xl shadow-xl p-8 animate-fade-in">
-        <div className="mb-6 text-6xl">🕵️‍♀️</div>
+        <div className="mb-6 text-6xl">
+            {isPerfect ? '🕵️‍♀️' : '📝'}
+        </div>
         <h2 className="text-3xl font-bold text-indigo-900 mb-4">
-            <div className="text-4xl mb-2">迷思破解完成！</div>
-            <div className="text-xl font-normal text-gray-500">Myth Busting Complete!</div>
+            <div className="text-4xl mb-2">{isPerfect ? "迷思破解完成！" : "再接再厲！"}</div>
+            <div className="text-xl font-normal text-gray-500">
+                {isPerfect ? "Myth Busting Complete!" : "Keep Trying!"}
+            </div>
         </h2>
         
-        <div className="bg-indigo-50 p-6 rounded-2xl inline-block mb-8">
+        <div className={`p-6 rounded-2xl inline-block mb-8 ${isPerfect ? 'bg-indigo-50' : 'bg-red-50'}`}>
             <div className="text-lg text-gray-600 mb-2">你的得分 / Your Score</div>
-            <div className="text-5xl font-black text-indigo-600">{score} / {MYTHS.length}</div>
+            <div className={`text-5xl font-black ${isPerfect ? 'text-indigo-600' : 'text-red-500'}`}>
+                {score} / {MYTHS.length}
+            </div>
         </div>
 
+        {!isPerfect && (
+            <p className="text-gray-500 mb-8 max-w-md mx-auto">
+                你需要全部答對才能進入下一關。請重新檢視錯誤的題目並再次挑戰！
+                <br/>
+                <span className="text-sm">You need a perfect score to proceed. Please review and try again!</span>
+            </p>
+        )}
+
         <div>
-            <Button onClick={onComplete} size="lg" variant="primary">
-            繼續練習 (Continue) &rarr;
-            </Button>
+            {isPerfect ? (
+                <Button onClick={onComplete} size="lg" variant="primary">
+                繼續練習 (Continue) &rarr;
+                </Button>
+            ) : (
+                <Button onClick={handleRetry} size="lg" variant="outline">
+                重新挑戰 (Retry) ↺
+                </Button>
+            )}
         </div>
       </div>
     );
@@ -115,7 +170,7 @@ export const MythGame: React.FC<MythGameProps> = ({ onComplete }) => {
                 <TextDisplay content={currentMyth.explanation} />
               </div>
               <Button onClick={handleNext} className="w-full">
-                {currentIndex === MYTHS.length - 1 ? '完成 (Finish)' : '下一題 (Next)'}
+                {currentIndex === MYTHS.length - 1 ? '查看結果 (See Results)' : '下一題 (Next)'}
               </Button>
             </div>
           )}

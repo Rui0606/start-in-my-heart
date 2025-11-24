@@ -84,6 +84,20 @@ export const MYTHS: Myth[] = [
       en: "Not definitely. Research indicates about a 5% chance for siblings. It involves complex genetic factors but isn't strictly hereditary.",
       vi: "Không chắc chắn. Nghiên cứu chỉ ra khoảng 5% cơ hội cho anh chị em ruột. Nó liên quan đến các yếu tố di truyền phức tạp nhưng không hoàn toàn do di truyền."
     }
+  },
+  {
+    id: 5,
+    statement: {
+      zh: "自閉症會傳染？",
+      en: "Is autism contagious?",
+      vi: "Tự kỷ có lây không?"
+    },
+    isTrue: false,
+    explanation: {
+      zh: "否。自閉症不是傳染病，是神經發展特徵。",
+      en: "No. Autism is not an infectious disease; it is a neurodevelopmental trait.",
+      vi: "Không. Tự kỷ không phải là bệnh truyền nhiễm; đó là một đặc điểm phát triển thần kinh."
+    }
   }
 ];
 

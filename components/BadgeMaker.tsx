@@ -1,17 +1,20 @@
 
 import React, { useState, useRef } from 'react';
 import { Button } from './Button';
+import { useSound } from '../contexts/SoundContext';
 
 export const BadgeMaker: React.FC = () => {
   const [name, setName] = useState('My Name');
   const [color, setColor] = useState('#4F46E5');
   const [icon, setIcon] = useState('star');
   const canvasRef = useRef<HTMLDivElement>(null);
+  const { playSound } = useSound();
 
   const colors = ['#4F46E5', '#DB2777', '#059669', '#D97706', '#2563EB'];
   const icons = ['star', 'heart', 'smile', 'sun', 'puzzle'];
 
   const handleDownload = () => {
+    playSound('victory');
     alert("在真實環境中，這將下載您的徽章！ (In a real environment, this would download your badge!)");
   };
 
@@ -93,7 +96,7 @@ export const BadgeMaker: React.FC = () => {
               {colors.map(c => (
                 <button
                   key={c}
-                  onClick={() => setColor(c)}
+                  onClick={() => { setColor(c); playSound('click'); }}
                   className={`w-12 h-12 rounded-full shadow-sm transition-transform hover:scale-110 ${color === c ? 'ring-4 ring-offset-2 ring-gray-300 scale-110' : ''}`}
                   style={{ backgroundColor: c }}
                 />
@@ -109,7 +112,7 @@ export const BadgeMaker: React.FC = () => {
                 {icons.map(i => (
                     <button
                         key={i}
-                        onClick={() => setIcon(i)}
+                        onClick={() => { setIcon(i); playSound('click'); }}
                         className={`w-12 h-12 rounded-xl flex items-center justify-center bg-gray-100 hover:bg-gray-200 ${icon === i ? 'bg-indigo-100 ring-2 ring-indigo-500' : ''}`}
                     >
                         <div className="w-6 h-6 text-gray-600 fill-current">
