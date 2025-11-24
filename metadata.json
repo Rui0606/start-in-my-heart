@@ -1,4 +1,5 @@
 {
   "name": "Stars in My Heart: Autism Awareness",
-  "description": "An interactive educational platform to learn about Autism Spectrum Disorder (ASD) through mini-games, myth-busting, and creative activities, based on CRPD and special education guidelines."
+  "description": "An interactive educational platform to learn about Autism Spectrum Disorder (ASD) through mini-games, myth-busting, and creative activities, based on CRPD and special education guidelines.",
+  "requestFramePermissions": []
 }

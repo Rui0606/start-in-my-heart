@@ -30,7 +30,7 @@ const App: React.FC = () => {
     <div className="max-w-4xl mx-auto text-center">
         <div className="mb-10 animate-fade-in-up">
             <h1 className="text-5xl md:text-7xl font-black text-indigo-900 mb-2 tracking-tight">
-                星心相印
+                🌟 認識星朋友 🌟
             </h1>
             <div className="text-2xl text-indigo-600 font-bold mb-1">Stars in My Heart</div>
             <div className="text-xl text-indigo-400 font-medium italic mb-6">Những ngôi sao trong trái tim tôi</div>
@@ -107,7 +107,7 @@ const App: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
             <div className="flex items-center space-x-2 cursor-pointer" onClick={() => handleStageChange(AppStage.INTRO)}>
                 <span className="text-2xl">🌟</span>
-                <span className="font-bold text-indigo-900 text-lg hidden sm:block">星心相印 (Stars in My Heart)</span>
+                <span className="font-bold text-indigo-900 text-lg hidden sm:block">認識星朋友 (Stars in My Heart)</span>
             </div>
             <div className="flex items-center gap-4">
                  <button
