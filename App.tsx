@@ -9,6 +9,7 @@ import { SurveyView } from './components/SurveyView';
 import { BadgeMaker } from './components/BadgeMaker';
 import { Button } from './components/Button';
 import { AiTutor } from './components/AiTutor';
+import { ResourceRoomLogo } from './components/ResourceRoomLogo';
 import { useSound } from './contexts/SoundContext';
 
 const App: React.FC = () => {
@@ -93,6 +94,11 @@ const App: React.FC = () => {
             <div className="absolute bottom-4 right-10 text-indigo-800 opacity-50 text-8xl">★</div>
         </div>
 
+        <div className="mt-16 mb-8 flex flex-col items-center justify-center opacity-80">
+             <p className="text-xs text-gray-400 mb-2 font-bold tracking-widest uppercase">Designed By</p>
+             <ResourceRoomLogo variant="large" />
+        </div>
+
         <p className="text-xs text-gray-400">
             資料來源：CRPD、身心障礙及資賦優異學生鑑定辦法。
         </p>
@@ -161,7 +167,10 @@ const App: React.FC = () => {
 
       <footer className="bg-white border-t border-gray-200 py-8 mt-auto">
         <div className="max-w-6xl mx-auto px-4 text-center text-gray-400 text-sm">
-            <p>© {new Date().getFullYear()} Autism Awareness Education.</p>
+            <p className="mb-2">© {new Date().getFullYear()} Autism Awareness Education.</p>
+            <div className="flex items-center justify-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+               <ResourceRoomLogo variant="small" />
+            </div>
         </div>
       </footer>
 

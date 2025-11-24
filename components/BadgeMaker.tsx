@@ -2,6 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { Button } from './Button';
 import { useSound } from '../contexts/SoundContext';
+import { ResourceRoomLogo } from './ResourceRoomLogo';
 
 export const BadgeMaker: React.FC = () => {
   const [name, setName] = useState('My Name');
@@ -131,6 +132,11 @@ export const BadgeMaker: React.FC = () => {
           </Button>
 
         </div>
+      </div>
+
+      <div className="mt-20 flex flex-col items-center justify-center opacity-70">
+           <p className="text-xs text-gray-400 mb-2 font-bold tracking-widest uppercase">Powered By</p>
+           <ResourceRoomLogo variant="default" />
       </div>
     </div>
   );

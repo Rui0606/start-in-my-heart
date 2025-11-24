@@ -131,10 +131,10 @@ export const ScenarioGame: React.FC<ScenarioGameProps> = ({ onComplete }) => {
              Scenario {currentIndex + 1}/{SCENARIOS.length}
            </div>
            <h3 className="text-xl font-bold text-indigo-100 mb-4 border-b border-indigo-400 pb-2">
-                <TextDisplay content={currentScenario.title} className="text-white" size="lg" />
+                <TextDisplay content={currentScenario.title} variant="inverted" size="lg" />
            </h3>
            <div className="text-indigo-50">
-             <TextDisplay content={currentScenario.description} className="text-indigo-50" />
+             <TextDisplay content={currentScenario.description} variant="inverted" />
            </div>
         </div>
 
@@ -193,3 +193,4 @@ export const ScenarioGame: React.FC<ScenarioGameProps> = ({ onComplete }) => {
     </div>
   );
 };
+    
