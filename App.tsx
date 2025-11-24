@@ -81,7 +81,7 @@ const App: React.FC = () => {
             <div className="relative z-10">
                 <h3 className="text-3xl font-bold mb-2">加入「星星徽章」挑戰！</h3>
                 <p className="text-indigo-200 text-lg mb-6">
-                    學習知識、破解迷思，並通過測驗 (90%+) 來製作你的專屬徽章。
+                    學習知識、破解迷思，並通過測驗 (100%) 來製作你的專屬徽章。
                 </p>
                 <Button onClick={() => advanceStage(AppStage.MYTHS)} size="lg" variant="secondary">
                     開始旅程 (Start) &rarr;
