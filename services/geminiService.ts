@@ -7,7 +7,7 @@ export const askGeminiTutor = async (userQuestion: string): Promise<string> => {
 }
 
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_API_KEY });
+    const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
     
     const response = await ai.models.generateContent({
       model: 'gemini-1.5-flash',
