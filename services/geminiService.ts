@@ -2,12 +2,12 @@ import { GoogleGenAI } from "@google/genai";
 import { PDF_CONTEXT } from "../constants";
 
 export const askGeminiTutor = async (userQuestion: string): Promise<string> => {
-  if (!process.env.API_KEY) {
-    return "API Key is missing. Please configure the environment.";
-  }
+  if (!process.env.NEXT_PUBLIC_API_KEY) {
+   return "API Key is missing...";
+}
 
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_API_KEY });
     
     const response = await ai.models.generateContent({
       model: 'gemini-1.5-flash',
