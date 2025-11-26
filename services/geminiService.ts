@@ -2,7 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import { PDF_CONTEXT } from "../constants";
 
 export const askGeminiTutor = async (userQuestion: string): Promise<string> => {
-  if (!process.env.NEXT_PUBLIC_API_KEY) {
+  if (!import.meta.env.VITE_API_KEY) {
    return "API Key is missing...";
 }
 
