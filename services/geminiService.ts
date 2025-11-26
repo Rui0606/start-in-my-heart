@@ -2,12 +2,11 @@ import { GoogleGenAI } from "@google/genai";
 import { PDF_CONTEXT } from "../constants";
 
 export const askGeminiTutor = async (userQuestion: string): Promise<string> => {
-  // 依據最新的開發規範，我們直接從 process.env 取得 API KEY
-  // Please ensure your environment has the API_KEY variable set.
+  // Ensure the API key is accessed via process.env.API_KEY as per guidelines.
   const apiKey = process.env.API_KEY;
 
   if (!apiKey) {
-    console.error("API Key is missing from process.env.API_KEY");
+    console.error("API Key is missing. Check your .env file or Vercel settings.");
     return "API Key configuration is missing. Please check your environment settings.";
   }
 

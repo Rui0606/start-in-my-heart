@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface ResourceRoomLogoProps {
   className?: string;
@@ -9,6 +9,8 @@ export const ResourceRoomLogo: React.FC<ResourceRoomLogoProps> = ({
   className = '', 
   variant = 'default' 
 }) => {
+  const [imgError, setImgError] = useState(false);
+
   const sizeClasses = {
     small: 'text-sm', 
     default: 'text-2xl', 
@@ -24,14 +26,27 @@ export const ResourceRoomLogo: React.FC<ResourceRoomLogoProps> = ({
   return (
     <div className={`inline-flex flex-col items-center justify-center ${className}`}>
       {/* 
-         ⚠️ 請確認您的專案 public 資料夾中已有 'logo.svg' 檔案
-         ⚠️ Ensure 'logo.svg' exists in your public folder 
+         ⚠️ Image Loading Logic:
+         1. Tries to load '/logo.svg' from the public folder.
+         2. If fails, shows an error message placeholder.
+         Ensure your folder is named 'public' (lowercase) and file is 'logo.svg'.
       */}
-      <img 
-        src="/logo.svg" 
-        alt="Resource Room Logo"
-        className={`${logoDimensions} object-contain mb-2 transition-transform hover:scale-105 duration-300 drop-shadow-md`}
-      />
+      {!imgError ? (
+        <img 
+          src="/logo.svg" 
+          alt="Resource Room Logo"
+          onError={() => {
+            console.error("Logo failed to load. Please check if 'public/logo.svg' exists.");
+            setImgError(true);
+          }}
+          className={`${logoDimensions} object-contain mb-2 transition-transform hover:scale-105 duration-300 drop-shadow-md`}
+        />
+      ) : (
+        <div className={`${logoDimensions} mb-2 bg-gray-100 rounded-lg flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-300 p-2`}>
+           <span className="text-2xl">🖼️</span>
+           <span className="text-[10px] text-center mt-1">Logo Missing<br/>(public/logo.svg)</span>
+        </div>
+      )}
 
       {/* Text Branding - Blue Color: #6BA4D8 */}
       <div className={`font-bold tracking-widest leading-tight text-[#6BA4D8] flex flex-col items-center text-center ${sizeClasses}`}>
