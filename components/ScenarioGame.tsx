@@ -127,13 +127,24 @@ export const ScenarioGame: React.FC<ScenarioGameProps> = ({ onComplete }) => {
                <rect width="100%" height="100%" fill="url(#dots)" />
              </svg>
            </div>
-           <div className="mb-4 opacity-80 uppercase tracking-widest font-bold text-xs">
+           
+           {/* GIF Placeholder: scenario.gif */}
+           <div className="relative z-10 mb-4 flex justify-center">
+              <img 
+                src="/scenario.gif" 
+                alt="Scenario Context" 
+                className="rounded-xl shadow-lg max-h-32 object-cover border-2 border-white/20"
+                onError={(e) => e.currentTarget.style.display = 'none'}
+              />
+           </div>
+
+           <div className="mb-4 opacity-80 uppercase tracking-widest font-bold text-xs relative z-10">
              Scenario {currentIndex + 1}/{SCENARIOS.length}
            </div>
-           <h3 className="text-xl font-bold text-indigo-100 mb-4 border-b border-indigo-400 pb-2">
+           <h3 className="text-xl font-bold text-indigo-100 mb-4 border-b border-indigo-400 pb-2 relative z-10">
                 <TextDisplay content={currentScenario.title} variant="inverted" size="lg" />
            </h3>
-           <div className="text-indigo-50">
+           <div className="text-indigo-50 relative z-10">
              <TextDisplay content={currentScenario.description} variant="inverted" />
            </div>
         </div>
@@ -193,4 +204,3 @@ export const ScenarioGame: React.FC<ScenarioGameProps> = ({ onComplete }) => {
     </div>
   );
 };
-    

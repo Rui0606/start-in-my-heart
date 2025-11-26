@@ -50,14 +50,25 @@ export const BadgeMaker: React.FC = () => {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <div className="text-center mb-8 bg-indigo-50 p-8 rounded-3xl border-2 border-indigo-100">
-        <h2 className="text-3xl md:text-4xl font-bold text-indigo-900 mb-4">
-            恭喜你成功完成挑戰，出示本頁面
-        </h2>
-        <h3 className="text-xl md:text-2xl font-bold text-indigo-700 mb-2">
-            製作你的「星心相印」徽章
-        </h3>
-        <p className="text-gray-500">Create Your "Star in My Heart" Badge</p>
+      <div className="text-center mb-8 bg-indigo-50 p-8 rounded-3xl border-2 border-indigo-100 relative overflow-hidden">
+        <div className="relative z-10">
+            <div className="flex justify-center items-center gap-4 mb-4">
+                <h2 className="text-3xl md:text-4xl font-bold text-indigo-900">
+                    恭喜你成功完成挑戰，出示本頁面
+                </h2>
+                {/* GIF Placeholder: celebration.gif */}
+                <img 
+                    src="/celebration.gif" 
+                    alt="Celebrate" 
+                    className="h-16 w-16 object-contain"
+                    onError={(e) => e.currentTarget.style.display = 'none'}
+                />
+            </div>
+            <h3 className="text-xl md:text-2xl font-bold text-indigo-700 mb-2">
+                製作你的「星心相印」徽章
+            </h3>
+            <p className="text-gray-500">Create Your "Star in My Heart" Badge</p>
+        </div>
       </div>
       
       <div className="flex flex-col lg:flex-row gap-12 items-center justify-center">

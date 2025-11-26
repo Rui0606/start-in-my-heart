@@ -10,7 +10,7 @@ export const askGeminiTutor = async (userQuestion: string): Promise<string> => {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-1.5-flash',
       contents: userQuestion,
       config: {
         systemInstruction: `You are a kind, educational tutor specializing in Autism Spectrum Disorder. 

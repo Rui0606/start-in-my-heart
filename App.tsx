@@ -36,6 +36,16 @@ const App: React.FC = () => {
             <div className="text-2xl text-indigo-600 font-bold mb-1">Stars in My Heart</div>
             <div className="text-xl text-indigo-400 font-medium italic mb-6">Những ngôi sao trong trái tim tôi</div>
             
+            {/* GIF Placeholder: intro.gif */}
+            <div className="flex justify-center mb-6">
+               <img 
+                 src="/intro.gif" 
+                 alt="Welcome Animation" 
+                 className="max-h-48 rounded-2xl shadow-sm object-contain"
+                 onError={(e) => e.currentTarget.style.display = 'none'}
+               />
+            </div>
+
             <p className="text-xl text-slate-600 font-bold bg-indigo-50 inline-block px-6 py-2 rounded-full">
                 認識自閉症譜系障礙
             </p>
