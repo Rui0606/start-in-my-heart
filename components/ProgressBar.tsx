@@ -13,7 +13,7 @@ const STAGES = [
   { id: AppStage.SCENARIOS, label: 'Practice' },
   { id: AppStage.QUIZ, label: 'Quiz' },
   { id: AppStage.SURVEY, label: 'Survey' },
-  { id: AppStage.BADGE_MAKER, label: 'Badge' },
+  { id: AppStage.BADGE_MAKER, label: 'Workshop' },
 ];
 
 export const ProgressBar: React.FC<ProgressBarProps> = ({ currentStage, setStage }) => {

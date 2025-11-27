@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppStage } from './types';
 import { ProgressBar } from './components/ProgressBar';
 import { MythGame } from './components/MythGame';
@@ -13,9 +13,19 @@ import { ResourceRoomLogo } from './components/ResourceRoomLogo';
 import { useSound } from './contexts/SoundContext';
 
 const App: React.FC = () => {
-  const [stage, setStage] = useState<AppStage>(AppStage.INTRO);
+  // Initialize stage from localStorage if available, otherwise default to INTRO
+  const [stage, setStage] = useState<AppStage>(() => {
+    const savedStage = localStorage.getItem('appStage');
+    return (savedStage as AppStage) || AppStage.INTRO;
+  });
+
   const [showAiTutor, setShowAiTutor] = useState(false);
   const { isMuted, toggleMute, playSound } = useSound();
+
+  // Save stage to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('appStage', stage);
+  }, [stage]);
 
   const advanceStage = (nextStage: AppStage) => {
     playSound('click');
