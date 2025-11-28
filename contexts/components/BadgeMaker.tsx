@@ -1,136 +1,166 @@
-
 import React, { useState, useRef } from 'react';
-import { Button } from './Button';
 import { useSound } from '../contexts/SoundContext';
+import { ResourceRoomLogo } from './ResourceRoomLogo';
+import { BadgeTutorial } from './BadgeTutorial';
+
+type WorkshopMode = 'menu' | 'badge' | 'mirror' | 'keychain';
 
 export const BadgeMaker: React.FC = () => {
-  const [name, setName] = useState('My Name');
-  const [color, setColor] = useState('#4F46E5');
-  const [icon, setIcon] = useState('star');
-  const canvasRef = useRef<HTMLDivElement>(null);
+  const [mode, setMode] = useState<WorkshopMode>('menu');
+  const [showUploadPrompt, setShowUploadPrompt] = useState(false);
+  const galleryRef = useRef<HTMLDivElement>(null);
   const { playSound } = useSound();
 
-  const colors = ['#4F46E5', '#DB2777', '#059669', '#D97706', '#2563EB'];
-  const icons = ['star', 'heart', 'smile', 'sun', 'puzzle'];
-
-  const handleDownload = () => {
-    playSound('victory');
-    alert("在真實環境中，這將下載您的徽章！ (In a real environment, this would download your badge!)");
+  const handleTutorialFinish = () => {
+      setShowUploadPrompt(true);
+      // Smooth scroll to gallery
+      if (galleryRef.current) {
+          galleryRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
   };
 
-  const renderIcon = (type: string) => {
-    switch(type) {
-        case 'star': return <svg className="w-20 h-20" fill="white" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>;
-        case 'heart': return <svg className="w-20 h-20" fill="white" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>;
-        case 'smile': return <svg className="w-20 h-20" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>;
-        case 'sun': return <svg className="w-20 h-20" fill="white" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="white" strokeWidth="2" strokeLinecap="round"/></svg>;
-        case 'puzzle': return <svg className="w-20 h-20" fill="white" viewBox="0 0 24 24"><path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/></svg>;
-        default: return null;
-    }
+  // --- MENU VIEW ---
+  if (mode === 'menu') {
+    return (
+      <div className="max-w-5xl mx-auto animate-fade-in text-center pb-20">
+        <div className="mb-12">
+            <h2 className="text-4xl font-bold text-indigo-900 mb-2">手作工作坊</h2>
+            <p className="text-gray-500 text-lg">Workshop & Creations</p>
+        </div>
+        
+        <div className="grid md:grid-cols-3 gap-8 px-4">
+            {/* Option 1: Badge */}
+            <button 
+                onClick={() => { setMode('badge'); playSound('click'); }}
+                className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-2 border-transparent hover:border-indigo-200"
+            >
+                <div className="w-24 h-24 bg-indigo-100 rounded-full mx-auto mb-6 flex items-center justify-center text-5xl group-hover:scale-110 transition-transform">
+                    📛
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-2 group-hover:text-indigo-600">胸章</h3>
+                <div className="text-sm font-bold text-gray-400 mb-4">Badge / Huy hiệu</div>
+                <p className="text-gray-500 text-sm">
+                    製作專屬於你的個性化胸章，別在背包上展現自我！
+                </p>
+            </button>
+
+            {/* Option 2: Mirror */}
+            <button 
+                onClick={() => { setMode('mirror'); playSound('click'); }}
+                className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-2 border-transparent hover:border-pink-200"
+            >
+                <div className="w-24 h-24 bg-pink-100 rounded-full mx-auto mb-6 flex items-center justify-center text-5xl group-hover:scale-110 transition-transform">
+                    🪞
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-2 group-hover:text-pink-600">鏡子</h3>
+                <div className="text-sm font-bold text-gray-400 mb-4">Mirror / Gương</div>
+                <p className="text-gray-500 text-sm">
+                    隨身攜帶的小圓鏡，實用又可愛的日常小物。
+                </p>
+            </button>
+
+            {/* Option 3: Keychain */}
+            <button 
+                onClick={() => { setMode('keychain'); playSound('click'); }}
+                className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-2 border-transparent hover:border-amber-200"
+            >
+                <div className="w-24 h-24 bg-amber-100 rounded-full mx-auto mb-6 flex items-center justify-center text-5xl group-hover:scale-110 transition-transform">
+                    🔑
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-2 group-hover:text-amber-600">鑰匙圈</h3>
+                <div className="text-sm font-bold text-gray-400 mb-4">Keychain / Móc khóa</div>
+                <p className="text-gray-500 text-sm">
+                    將喜歡的圖案掛在鑰匙或包包上，隨時陪伴你。
+                </p>
+            </button>
+        </div>
+
+        <div className="mt-20 flex flex-col items-center justify-center opacity-70">
+           <p className="text-xs text-gray-400 mb-2 font-bold tracking-widest uppercase">Powered By</p>
+           <ResourceRoomLogo variant="default" />
+        </div>
+      </div>
+    );
   }
 
+  // --- WORKSHOP VIEW ---
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="text-center mb-8 bg-indigo-50 p-8 rounded-3xl border-2 border-indigo-100">
-        <h2 className="text-3xl md:text-4xl font-bold text-indigo-900 mb-4">
-            恭喜你成功完成挑戰，出示本頁面
-        </h2>
-        <h3 className="text-xl md:text-2xl font-bold text-indigo-700 mb-2">
-            製作你的「星心相印」徽章
-        </h3>
-        <p className="text-gray-500">Create Your "Star in My Heart" Badge</p>
+    <div className="max-w-5xl mx-auto animate-fade-in">
+      <div className="mb-6">
+        <button 
+            onClick={() => { setMode('menu'); playSound('click'); }}
+            className="flex items-center gap-2 text-gray-500 hover:text-indigo-600 font-bold transition-colors"
+        >
+            ← 返回選單 (Back to Menu)
+        </button>
+      </div>
+
+      <div className="text-center mb-8 bg-indigo-50 p-8 rounded-3xl border-2 border-indigo-100 relative overflow-hidden">
+        <div className="relative z-10">
+            <div className="flex justify-center items-center gap-4 mb-4">
+                <h2 className="text-3xl md:text-4xl font-bold text-indigo-900">
+                    {mode === 'badge' ? '胸章製作' : mode === 'mirror' ? '鏡子製作' : '鑰匙圈製作'}
+                </h2>
+                {/* GIF Placeholder: celebration.gif */}
+                <img 
+                    src="/celebration.gif" 
+                    alt="Celebrate" 
+                    className="h-16 w-16 object-contain"
+                    onError={(e) => e.currentTarget.style.display = 'none'}
+                />
+            </div>
+            <h3 className="text-xl md:text-2xl font-bold text-indigo-700 mb-2">
+                恭喜完成挑戰！開始製作吧！
+            </h3>
+            <p className="text-gray-500">Congratulations! Start Making Your {mode === 'badge' ? 'Badge' : mode === 'mirror' ? 'Mirror' : 'Keychain'}</p>
+        </div>
+      </div>
+
+      {/* Tutorial Section */}
+      {mode === 'badge' ? (
+          <BadgeTutorial onFinish={handleTutorialFinish} />
+      ) : (
+          <div className="bg-gray-50 rounded-2xl p-8 text-center border-2 border-dashed border-gray-200 mb-12">
+              <div className="text-4xl mb-4">🚧</div>
+              <h3 className="text-xl font-bold text-gray-600 mb-2">教學製作中</h3>
+              <p className="text-gray-400">Tutorial coming soon...</p>
+          </div>
+      )}
+      
+      {/* Padlet Gallery Section */}
+      <div ref={galleryRef} className="mt-12 mb-20 animate-fade-in-up scroll-mt-20">
+          <div className="text-center mb-8 relative">
+              
+              {/* CALL TO ACTION PROMPT */}
+              {showUploadPrompt && (
+                  <div className="absolute left-1/2 -top-16 -translate-x-1/2 bg-pink-500 text-white px-6 py-3 rounded-full font-bold shadow-xl animate-bounce z-20 whitespace-nowrap">
+                      👇 現在，上傳你的作品吧！(Upload Now!)
+                      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-pink-500 rotate-45"></div>
+                  </div>
+              )}
+
+              <div className="inline-block bg-amber-100 text-amber-800 px-4 py-1 rounded-full text-sm font-bold mb-4">Showcase</div>
+              <h2 className="text-3xl font-bold text-indigo-900 mb-2">認識星朋友「成品星空牆」</h2>
+              <p className="text-gray-500">Star Gallery / Bức tường ngôi sao</p>
+              <p className="text-sm text-indigo-500 mt-4 bg-indigo-50 inline-block px-6 py-3 rounded-xl border border-indigo-100">
+                  📷 請點擊牆上的 <span className="font-bold text-pink-500 text-xl inline-block transform translate-y-0.5 mx-1">+</span> 拍照上傳你的作品！
+                  <br/><span className="text-xs opacity-70">(Click the + button to upload your photo!)</span>
+              </p>
+          </div>
+          
+          <div className="w-full h-[800px] bg-slate-100 rounded-3xl shadow-xl overflow-hidden border-4 border-indigo-100 relative">
+              <iframe
+                src="https://padlet.com/embed/uohll8oek3ky99pq"
+                frameBorder="0"
+                allow="camera;microphone;geolocation"
+                style={{ width: '100%', height: '100%', display: 'block' }}
+                title="Star Gallery"
+              ></iframe>
+          </div>
       </div>
       
-      <div className="flex flex-col lg:flex-row gap-12 items-center justify-center">
-        
-        {/* Badge Preview */}
-        <div className="bg-white p-12 rounded-3xl shadow-2xl flex flex-col items-center justify-center relative">
-          <div className="absolute top-0 left-0 w-full text-center -mt-6">
-             <span className="bg-amber-400 text-amber-900 font-bold px-4 py-2 rounded-full text-sm">預覽 (PREVIEW)</span>
-          </div>
-          <div 
-            ref={canvasRef}
-            className="w-64 h-64 rounded-full shadow-inner flex flex-col items-center justify-center relative border-8 border-white ring-4 ring-gray-100 transition-colors duration-300"
-            style={{ backgroundColor: color }}
-          >
-            {/* Badge Content */}
-            <div className="mb-2 animate-bounce-slow">
-                {renderIcon(icon)}
-            </div>
-            <div className="text-white font-extrabold text-xl uppercase tracking-wider drop-shadow-md bg-black/20 px-4 py-1 rounded-lg backdrop-blur-sm">
-                {name || 'NAME'}
-            </div>
-            
-            {/* Pin Back Visual */}
-            <div className="absolute -z-10 w-full h-full rounded-full bg-gray-300 top-2 left-2"></div>
-          </div>
-          
-          <div className="mt-8 text-gray-500 text-sm text-center max-w-xs">
-            "放入金屬蓋 (A模)... 將下模向右推 (B模)..."
-            <br/>(虛擬壓章機)
-          </div>
-        </div>
-
-        {/* Controls */}
-        <div className="w-full max-w-md space-y-8">
-          
-          <div>
-            <label className="block text-gray-700 font-bold mb-2">
-                你的名字 <span className="text-sm font-normal text-gray-400">(Your Name)</span>
-            </label>
-            <input 
-              type="text" 
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              maxLength={12}
-              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all font-bold text-lg"
-              placeholder="輸入名字..."
-            />
-          </div>
-
-          <div>
-            <label className="block text-gray-700 font-bold mb-2">
-                徽章顏色 <span className="text-sm font-normal text-gray-400">(Color)</span>
-            </label>
-            <div className="flex gap-3">
-              {colors.map(c => (
-                <button
-                  key={c}
-                  onClick={() => { setColor(c); playSound('click'); }}
-                  className={`w-12 h-12 rounded-full shadow-sm transition-transform hover:scale-110 ${color === c ? 'ring-4 ring-offset-2 ring-gray-300 scale-110' : ''}`}
-                  style={{ backgroundColor: c }}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div>
-             <label className="block text-gray-700 font-bold mb-2">
-                圖案 <span className="text-sm font-normal text-gray-400">(Symbol)</span>
-             </label>
-             <div className="flex gap-3">
-                {icons.map(i => (
-                    <button
-                        key={i}
-                        onClick={() => { setIcon(i); playSound('click'); }}
-                        className={`w-12 h-12 rounded-xl flex items-center justify-center bg-gray-100 hover:bg-gray-200 ${icon === i ? 'bg-indigo-100 ring-2 ring-indigo-500' : ''}`}
-                    >
-                        <div className="w-6 h-6 text-gray-600 fill-current">
-                             {/* Mini SVG render */}
-                             <div className="scale-[0.3] origin-center transform -translate-x-[30%] -translate-y-[30%] text-gray-800">
-                                 {renderIcon(i)}
-                             </div>
-                        </div>
-                    </button>
-                ))}
-             </div>
-          </div>
-
-          <Button onClick={handleDownload} size="lg" className="w-full shadow-xl">
-            下載 / 列印徽章 (Download)
-          </Button>
-
-        </div>
+      <div className="flex justify-center opacity-70 mt-8">
+           <ResourceRoomLogo variant="small" />
       </div>
     </div>
   );

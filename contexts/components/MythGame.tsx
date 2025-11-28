@@ -37,12 +37,8 @@ export const MythGame: React.FC<MythGameProps> = ({ onComplete }) => {
       setRevealed(false);
     } else {
       setCompleted(true);
-      // Check result immediately for sound
-      if (score === MYTHS.length) { // Actually score isn't updated in this render cycle yet if the last one was correct, but logic holds because handleGuess updates state.
-          // Wait, state update is async.
-          // But here we are in handleNext, so 'score' is from render.
-          // The issue: if the LAST question was just answered, 'score' variable might not reflect it if we called handleNext immediately.
-          // But handleNext is called via button click AFTER reveal, so score is updated.
+      if (score === MYTHS.length) {
+         // Sound played by effect
       }
     }
   };
@@ -126,6 +122,15 @@ export const MythGame: React.FC<MythGameProps> = ({ onComplete }) => {
       
       <div className="bg-white rounded-3xl shadow-xl overflow-hidden border-b-8 border-indigo-100">
         <div className="p-8 md:p-12 min-h-[400px] flex flex-col justify-center items-center">
+          
+          {/* GIF Placeholder: myth.gif */}
+          <img 
+            src="/myth.gif" 
+            alt="Thinking" 
+            className="h-24 mb-4 object-contain"
+            onError={(e) => e.currentTarget.style.display = 'none'}
+          />
+
           <div className="bg-indigo-50 text-indigo-800 font-bold px-4 py-1 rounded-full mb-6 text-sm tracking-wide uppercase">
             Q {currentIndex + 1} / {MYTHS.length}
           </div>

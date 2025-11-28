@@ -2,13 +2,19 @@ import { GoogleGenAI } from "@google/genai";
 import { PDF_CONTEXT } from "../constants";
 
 export const askGeminiTutor = async (userQuestion: string): Promise<string> => {
-  if (!process.env.API_KEY) {
-    return "API Key is missing. Please configure the environment.";
+  // Ensure the API key is accessed via process.env.API_KEY as per guidelines.
+  const apiKey = process.env.API_KEY;
+
+  if (!apiKey) {
+    console.error("API Key is missing. Check your .env file or Vercel settings.");
+    return "API Key configuration is missing. Please check your environment settings.";
   }
 
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: apiKey });
     
+    // 使用 gemini-2.5-flash，這是目前速度最快且最具成本效益（有免費額度）的模型
+    // Using gemini-2.5-flash for best performance and cost-efficiency
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: userQuestion,
@@ -26,6 +32,6 @@ export const askGeminiTutor = async (userQuestion: string): Promise<string> => {
     return response.text || "I couldn't generate a response. Please try again.";
   } catch (error) {
     console.error("Gemini API Error:", error);
-    return "Sorry, I'm having trouble connecting to the AI tutor right now.";
+    return "Sorry, I'm having trouble connecting to the AI tutor right now. Please check your network or API key quota.";
   }
 };

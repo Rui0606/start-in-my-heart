@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppStage } from './types';
 import { ProgressBar } from './components/ProgressBar';
 import { MythGame } from './components/MythGame';
@@ -9,12 +9,23 @@ import { SurveyView } from './components/SurveyView';
 import { BadgeMaker } from './components/BadgeMaker';
 import { Button } from './components/Button';
 import { AiTutor } from './components/AiTutor';
+import { ResourceRoomLogo } from './components/ResourceRoomLogo';
 import { useSound } from './contexts/SoundContext';
 
 const App: React.FC = () => {
-  const [stage, setStage] = useState<AppStage>(AppStage.INTRO);
+  // Initialize stage from localStorage if available, otherwise default to INTRO
+  const [stage, setStage] = useState<AppStage>(() => {
+    const savedStage = localStorage.getItem('appStage');
+    return (savedStage as AppStage) || AppStage.INTRO;
+  });
+
   const [showAiTutor, setShowAiTutor] = useState(false);
   const { isMuted, toggleMute, playSound } = useSound();
+
+  // Save stage to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('appStage', stage);
+  }, [stage]);
 
   const advanceStage = (nextStage: AppStage) => {
     playSound('click');
@@ -30,11 +41,21 @@ const App: React.FC = () => {
     <div className="max-w-4xl mx-auto text-center">
         <div className="mb-10 animate-fade-in-up">
             <h1 className="text-5xl md:text-7xl font-black text-indigo-900 mb-2 tracking-tight">
-                星心相印
+                🌟 認識星朋友 🌟
             </h1>
             <div className="text-2xl text-indigo-600 font-bold mb-1">Stars in My Heart</div>
             <div className="text-xl text-indigo-400 font-medium italic mb-6">Những ngôi sao trong trái tim tôi</div>
             
+            {/* GIF Placeholder: intro.gif */}
+            <div className="flex justify-center mb-6">
+               <img 
+                 src="/intro.gif" 
+                 alt="Welcome Animation" 
+                 className="max-h-48 rounded-2xl shadow-sm object-contain"
+                 onError={(e) => e.currentTarget.style.display = 'none'}
+               />
+            </div>
+
             <p className="text-xl text-slate-600 font-bold bg-indigo-50 inline-block px-6 py-2 rounded-full">
                 認識自閉症譜系障礙
             </p>
@@ -81,7 +102,7 @@ const App: React.FC = () => {
             <div className="relative z-10">
                 <h3 className="text-3xl font-bold mb-2">加入「星星徽章」挑戰！</h3>
                 <p className="text-indigo-200 text-lg mb-6">
-                    學習知識、破解迷思，並通過測驗 (90%+) 來製作你的專屬徽章。
+                    學習知識、破解迷思，並通過測驗 (100%) 來製作你的專屬徽章。
                 </p>
                 <Button onClick={() => advanceStage(AppStage.MYTHS)} size="lg" variant="secondary">
                     開始旅程 (Start) &rarr;
@@ -91,6 +112,11 @@ const App: React.FC = () => {
             {/* Decorative stars */}
             <div className="absolute top-4 left-4 text-indigo-800 opacity-50 text-6xl">★</div>
             <div className="absolute bottom-4 right-10 text-indigo-800 opacity-50 text-8xl">★</div>
+        </div>
+
+        <div className="mt-16 mb-8 flex flex-col items-center justify-center opacity-80">
+             <p className="text-xs text-gray-400 mb-2 font-bold tracking-widest uppercase">Designed By</p>
+             <ResourceRoomLogo variant="large" />
         </div>
 
         <p className="text-xs text-gray-400">
@@ -107,7 +133,7 @@ const App: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
             <div className="flex items-center space-x-2 cursor-pointer" onClick={() => handleStageChange(AppStage.INTRO)}>
                 <span className="text-2xl">🌟</span>
-                <span className="font-bold text-indigo-900 text-lg hidden sm:block">星心相印 (Stars in My Heart)</span>
+                <span className="font-bold text-indigo-900 text-lg hidden sm:block">認識星朋友 (Stars in My Heart)</span>
             </div>
             <div className="flex items-center gap-4">
                  <button
@@ -161,7 +187,10 @@ const App: React.FC = () => {
 
       <footer className="bg-white border-t border-gray-200 py-8 mt-auto">
         <div className="max-w-6xl mx-auto px-4 text-center text-gray-400 text-sm">
-            <p>© {new Date().getFullYear()} Autism Awareness Education.</p>
+            <p className="mb-2">© {new Date().getFullYear()} Autism Awareness Education.</p>
+            <div className="flex items-center justify-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+               <ResourceRoomLogo variant="small" />
+            </div>
         </div>
       </footer>
 
