@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSound } from '../contexts/SoundContext';
 import { ResourceRoomLogo } from './ResourceRoomLogo';
 import { BadgeTutorial } from './BadgeTutorial';
@@ -8,7 +7,17 @@ type WorkshopMode = 'menu' | 'badge' | 'mirror' | 'keychain';
 
 export const BadgeMaker: React.FC = () => {
   const [mode, setMode] = useState<WorkshopMode>('menu');
+  const [showUploadPrompt, setShowUploadPrompt] = useState(false);
+  const galleryRef = useRef<HTMLDivElement>(null);
   const { playSound } = useSound();
+
+  const handleTutorialFinish = () => {
+      setShowUploadPrompt(true);
+      // Smooth scroll to gallery
+      if (galleryRef.current) {
+          galleryRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
+  };
 
   // --- MENU VIEW ---
   if (mode === 'menu') {
@@ -109,7 +118,7 @@ export const BadgeMaker: React.FC = () => {
 
       {/* Tutorial Section */}
       {mode === 'badge' ? (
-          <BadgeTutorial />
+          <BadgeTutorial onFinish={handleTutorialFinish} />
       ) : (
           <div className="bg-gray-50 rounded-2xl p-8 text-center border-2 border-dashed border-gray-200 mb-12">
               <div className="text-4xl mb-4">🚧</div>
@@ -118,9 +127,18 @@ export const BadgeMaker: React.FC = () => {
           </div>
       )}
       
-      {/* Padlet Gallery Section - Replaces the old Design/Preview area */}
-      <div className="mt-12 mb-20 animate-fade-in-up">
-          <div className="text-center mb-8">
+      {/* Padlet Gallery Section */}
+      <div ref={galleryRef} className="mt-12 mb-20 animate-fade-in-up scroll-mt-20">
+          <div className="text-center mb-8 relative">
+              
+              {/* CALL TO ACTION PROMPT */}
+              {showUploadPrompt && (
+                  <div className="absolute left-1/2 -top-16 -translate-x-1/2 bg-pink-500 text-white px-6 py-3 rounded-full font-bold shadow-xl animate-bounce z-20 whitespace-nowrap">
+                      👇 現在，上傳你的作品吧！(Upload Now!)
+                      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-pink-500 rotate-45"></div>
+                  </div>
+              )}
+
               <div className="inline-block bg-amber-100 text-amber-800 px-4 py-1 rounded-full text-sm font-bold mb-4">Showcase</div>
               <h2 className="text-3xl font-bold text-indigo-900 mb-2">認識星朋友「成品星空牆」</h2>
               <p className="text-gray-500">Star Gallery / Bức tường ngôi sao</p>

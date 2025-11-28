@@ -1,7 +1,6 @@
-
 import React, { createContext, useContext, useState, useRef, useEffect, ReactNode } from 'react';
 
-type SoundType = 'click' | 'correct' | 'wrong' | 'pass' | 'victory';
+type SoundType = 'click' | 'correct' | 'wrong' | 'pass' | 'victory' | 'pop';
 
 interface SoundContextType {
   isMuted: boolean;
@@ -16,7 +15,6 @@ export const SoundProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const audioCtxRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
-    // Initialize AudioContext safely
     const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
     if (AudioContextClass) {
       audioCtxRef.current = new AudioContextClass();
@@ -28,7 +26,7 @@ export const SoundProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   const toggleMute = () => setIsMuted(prev => !prev);
 
-  const playTone = (freq: number, type: OscillatorType, duration: number, startTime: number = 0, volume: number = 0.05) => {
+  const playTone = (freq: number, type: OscillatorType, duration: number, startTime: number = 0, volume: number = 0.1) => {
     if (!audioCtxRef.current) return;
     const ctx = audioCtxRef.current;
     
@@ -38,7 +36,10 @@ export const SoundProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     osc.type = type;
     osc.frequency.setValueAtTime(freq, ctx.currentTime + startTime);
     
-    gain.gain.setValueAtTime(volume, ctx.currentTime + startTime);
+    // Increased volume gain (3x boost)
+    const boostedVolume = volume * 3;
+
+    gain.gain.setValueAtTime(boostedVolume, ctx.currentTime + startTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + startTime + duration);
     
     osc.connect(gain);
@@ -51,7 +52,6 @@ export const SoundProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const playSound = (type: SoundType) => {
     if (isMuted || !audioCtxRef.current) return;
     
-    // Resume context if suspended (browser policy requires user interaction)
     if (audioCtxRef.current.state === 'suspended') {
       audioCtxRef.current.resume().catch(e => console.error(e));
     }
@@ -60,33 +60,33 @@ export const SoundProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     switch (type) {
       case 'click':
-        // High pitch short tick
-        playTone(800, 'sine', 0.05, 0, 0.03);
+        playTone(800, 'sine', 0.05, 0, 0.05);
         break;
       case 'correct':
-        // Pleasant major 3rd
-        playTone(523.25, 'sine', 0.1, 0, 0.05); // C5
-        playTone(659.25, 'sine', 0.1, 0.08, 0.05); // E5
+        playTone(523.25, 'sine', 0.1, 0, 0.1); 
+        playTone(659.25, 'sine', 0.1, 0.08, 0.1); 
         break;
       case 'wrong':
-        // Low buzzing sound
-        playTone(150, 'sawtooth', 0.2, 0, 0.05);
-        playTone(140, 'sawtooth', 0.2, 0.1, 0.05);
+        playTone(150, 'sawtooth', 0.2, 0, 0.1);
+        playTone(140, 'sawtooth', 0.2, 0.1, 0.1);
         break;
       case 'pass':
-        // Ascending chime
-        playTone(523.25, 'sine', 0.2, 0, 0.05);
-        playTone(659.25, 'sine', 0.2, 0.1, 0.05);
-        playTone(783.99, 'sine', 0.4, 0.2, 0.05); // G5
+        playTone(523.25, 'sine', 0.2, 0, 0.1);
+        playTone(659.25, 'sine', 0.2, 0.1, 0.1);
+        playTone(783.99, 'sine', 0.4, 0.2, 0.1); 
         break;
       case 'victory':
-        // Fanfare
         const now = 0;
-        const v = 0.05;
+        const v = 0.1;
         playTone(523.25, 'triangle', 0.2, now, v);
         playTone(659.25, 'triangle', 0.2, now + 0.15, v);
         playTone(783.99, 'triangle', 0.2, now + 0.30, v);
-        playTone(1046.50, 'triangle', 0.8, now + 0.45, v); // C6
+        playTone(1046.50, 'triangle', 0.8, now + 0.45, v); 
+        break;
+      case 'pop':
+        // Pop sound for confetti
+        playTone(600, 'square', 0.05, 0, 0.15);
+        playTone(300, 'sine', 0.1, 0.02, 0.1);
         break;
     }
   };
