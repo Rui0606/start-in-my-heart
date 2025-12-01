@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { useSound } from '../contexts/SoundContext';
 import { ResourceRoomLogo } from './ResourceRoomLogo';
-import { BadgeTutorial } from './BadgeTutorial';
+import { WorkshopTutorial } from './WorkshopTutorial'; // Import new component
 
-type WorkshopMode = 'menu' | 'badge' | 'mirror' | 'keychain';
+type WorkshopMode = 'menu' | 'badge' | 'mirror' | 'magnet';
 
 export const BadgeMaker: React.FC = () => {
   const [mode, setMode] = useState<WorkshopMode>('menu');
@@ -24,8 +24,8 @@ export const BadgeMaker: React.FC = () => {
     return (
       <div className="max-w-5xl mx-auto animate-fade-in text-center pb-20">
         <div className="mb-12">
-            <h2 className="text-4xl font-bold text-indigo-900 mb-2">手作工作坊</h2>
-            <p className="text-gray-500 text-lg">Workshop & Creations</p>
+            <h2 className="text-4xl font-bold text-indigo-900 mb-2">徽章機創作說明</h2>
+            <p className="text-gray-500 text-lg">Badge Maker Instructions / Hướng dẫn Máy làm Huy hiệu</p>
         </div>
         
         <div className="grid md:grid-cols-3 gap-8 px-4">
@@ -59,18 +59,18 @@ export const BadgeMaker: React.FC = () => {
                 </p>
             </button>
 
-            {/* Option 3: Keychain */}
+            {/* Option 3: Magnet */}
             <button 
-                onClick={() => { setMode('keychain'); playSound('click'); }}
+                onClick={() => { setMode('magnet'); playSound('click'); }}
                 className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-2 border-transparent hover:border-amber-200"
             >
                 <div className="w-24 h-24 bg-amber-100 rounded-full mx-auto mb-6 flex items-center justify-center text-5xl group-hover:scale-110 transition-transform">
-                    🔑
+                    🧲
                 </div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2 group-hover:text-amber-600">鑰匙圈</h3>
-                <div className="text-sm font-bold text-gray-400 mb-4">Keychain / Móc khóa</div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-2 group-hover:text-amber-600">冰箱貼</h3>
+                <div className="text-sm font-bold text-gray-400 mb-4">Magnet / Nam châm tủ lạnh</div>
                 <p className="text-gray-500 text-sm">
-                    將喜歡的圖案掛在鑰匙或包包上，隨時陪伴你。
+                    將喜歡的圖案吸在冰箱或白板上，隨時陪伴你。
                 </p>
             </button>
         </div>
@@ -99,7 +99,7 @@ export const BadgeMaker: React.FC = () => {
         <div className="relative z-10">
             <div className="flex justify-center items-center gap-4 mb-4">
                 <h2 className="text-3xl md:text-4xl font-bold text-indigo-900">
-                    {mode === 'badge' ? '胸章製作' : mode === 'mirror' ? '鏡子製作' : '鑰匙圈製作'}
+                    {mode === 'badge' ? '胸章製作' : mode === 'mirror' ? '鏡子製作' : '冰箱貼製作'}
                 </h2>
                 {/* GIF Placeholder: celebration.gif */}
                 <img 
@@ -112,19 +112,13 @@ export const BadgeMaker: React.FC = () => {
             <h3 className="text-xl md:text-2xl font-bold text-indigo-700 mb-2">
                 恭喜完成挑戰！開始製作吧！
             </h3>
-            <p className="text-gray-500">Congratulations! Start Making Your {mode === 'badge' ? 'Badge' : mode === 'mirror' ? 'Mirror' : 'Keychain'}</p>
+            <p className="text-gray-500">Congratulations! Start Making Your {mode === 'badge' ? 'Badge' : mode === 'mirror' ? 'Mirror' : 'Magnet'}</p>
         </div>
       </div>
 
-      {/* Tutorial Section */}
-      {mode === 'badge' ? (
-          <BadgeTutorial onFinish={handleTutorialFinish} />
-      ) : (
-          <div className="bg-gray-50 rounded-2xl p-8 text-center border-2 border-dashed border-gray-200 mb-12">
-              <div className="text-4xl mb-4">🚧</div>
-              <h3 className="text-xl font-bold text-gray-600 mb-2">教學製作中</h3>
-              <p className="text-gray-400">Tutorial coming soon...</p>
-          </div>
+      {/* Tutorial Section - Now supports ALL modes */}
+      {(mode === 'badge' || mode === 'mirror' || mode === 'magnet') && (
+          <WorkshopTutorial mode={mode} onFinish={handleTutorialFinish} />
       )}
       
       {/* Padlet Gallery Section */}
