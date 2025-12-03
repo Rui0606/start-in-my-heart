@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from './Button';
 import { useSound } from '../contexts/SoundContext';
@@ -62,55 +61,55 @@ type TutorialType = 'badge' | 'mirror' | 'magnet';
 interface TutorialStep {
   id: number;
   img: string;
-  text: { zh: string; en: string; vn: string };
+  text: { zh: string; en: string; vn: string; id: string };
 }
 
 const TUTORIAL_DATA: Record<TutorialType, TutorialStep[]> = {
   badge: [
-    { id: 1, img: "/tutorial/badge/a1.jpg", text: { zh: "徽章機有分A邊跟B邊。", en: "The badge machine is divided into Side A and Side B.", vn: "Máy làm huy hiệu được chia thành Mặt A và Mặt B." } },
-    { id: 2, img: "/tutorial/badge/a2.jpg", text: { zh: "將鐵片有凹槽的面朝下放置到A邊。", en: "Place the metal sheet with the groove facing down onto Side A.", vn: "Đặt tấm kim loại với mặt có rãnh hướng xuống vào Mặt A." } },
-    { id: 3, img: "/tutorial/badge/a3.jpg", text: { zh: "放入徽章圖片。", en: "Insert the badge image.", vn: "Đặt hình ảnh huy hiệu vào." } },
-    { id: 4, img: "/tutorial/badge/a4.jpg", text: { zh: "放入透明片。", en: "Insert the transparent film.", vn: "Đặt tấm phim trong suốt vào." } },
-    { id: 5, img: "/tutorial/badge/a5.jpg", text: { zh: "輕輕向右推到底。", en: "Gently push all the way to the right.", vn: "Nhẹ nhàng đẩy sang phải cho đến khi chạm hết." } },
-    { id: 6, img: "/tutorial/badge/a6.jpg", text: { zh: "在B邊水平放置徽章針背板(注意:別針處朝下)。", en: "Horizontally place the badge pin backing onto Side B (Note: the pin side faces down).", vn: "Đặt tấm nền ghim huy hiệu nằm ngang vào Mặt B (Lưu ý: mặt ghim hướng xuống)." } },
-    { id: 7, img: "/tutorial/badge/a7.jpg", text: { zh: "向A邊按壓到底。", en: "Press down completely onto Side A.", vn: "Nhấn hoàn toàn xuống Mặt A." } },
-    { id: 8, img: "/tutorial/badge/a8.jpg", text: { zh: "向左輕推到底。", en: "Gently push all the way to the left.", vn: "Nhẹ nhàng đẩy sang trái cho đến khi chạm hết." } },
-    { id: 9, img: "/tutorial/badge/a9.jpg", text: { zh: "向B邊按壓到底。", en: "Press down completely onto Side B.", vn: "Nhấn hoàn toàn xuống Mặt B." } },
-    { id: 10, img: "/tutorial/badge/a10.jpg", text: { zh: "徽章製作好囉!", en: "The badge is finished!", vn: "Huy hiệu đã hoàn thành!" } },
+    { id: 1, img: "/tutorial/badge/a1.jpg", text: { zh: "徽章機有分A邊跟B邊。", en: "The badge machine is divided into Side A and Side B.", vn: "Máy làm huy hiệu được chia thành Mặt A và Mặt B.", id: "Mesin ini memiliki sisi A dan sisi B." } },
+    { id: 2, img: "/tutorial/badge/a2.jpg", text: { zh: "將鐵片有凹槽的面朝下放置到A邊。", en: "Place the metal sheet with the groove facing down onto Side A.", vn: "Đặt tấm kim loại với mặt có rãnh hướng xuống vào Mặt A.", id: "Letakkan plat besi dengan sisi cekung menghadap ke bawah pada sisi A." } },
+    { id: 3, img: "/tutorial/badge/a3.jpg", text: { zh: "放入徽章圖片。", en: "Insert the badge image.", vn: "Đặt hình ảnh huy hiệu vào.", id: "Masukkan gambar." } },
+    { id: 4, img: "/tutorial/badge/a4.jpg", text: { zh: "放入透明片。", en: "Insert the transparent film.", vn: "Đặt tấm phim trong suốt vào.", id: "Lalu letakkan plastik bening di atasnya." } },
+    { id: 5, img: "/tutorial/badge/a5.jpg", text: { zh: "輕輕向右推到底。", en: "Gently push all the way to the right.", vn: "Nhẹ nhàng đẩy sang phải cho đến khi chạm hết.", id: "Geser cetakan ke kanan secara perlahan sampai mentok." } },
+    { id: 6, img: "/tutorial/badge/a6.jpg", text: { zh: "在B邊水平放置徽章針背板(注意:別針處朝下)。", en: "Horizontally place the badge pin backing onto Side B (Note: the pin side faces down).", vn: "Đặt tấm nền ghim huy hiệu nằm ngang vào Mặt B (Lưu ý: mặt ghim hướng xuống).", id: "Letakkan peniti secara horizontal di sisi B (sisi peniti menghadap ke bawah)." } },
+    { id: 7, img: "/tutorial/badge/a7.jpg", text: { zh: "向A邊按壓到底。", en: "Press down completely onto Side A.", vn: "Nhấn hoàn toàn xuống Mặt A.", id: "Tekan tuas pada sisi A ke bawah sampai mentok." } },
+    { id: 8, img: "/tutorial/badge/a8.jpg", text: { zh: "向左輕推到底。", en: "Gently push all the way to the left.", vn: "Nhẹ nhàng đẩy sang trái cho đến khi chạm hết.", id: "Geser ke kiri sampai mentok." } },
+    { id: 9, img: "/tutorial/badge/a9.jpg", text: { zh: "向B邊按壓到底。", en: "Press down completely onto Side B.", vn: "Nhấn hoàn toàn xuống Mặt B.", id: "Lalu tekan tuas sisi B ke bawah sampai mentok." } },
+    { id: 10, img: "/tutorial/badge/a10.jpg", text: { zh: "徽章製作好囉!", en: "The badge is finished!", vn: "Huy hiệu đã hoàn thành!", id: "Pin sudah jadi!" } },
   ],
   mirror: [
-    { id: 1, img: "/tutorial/mirror/b1.jpg", text: { zh: "徽章機有分A邊跟B邊。", en: "The badge machine is divided into Side A and Side B.", vn: "Máy làm huy hiệu được chia thành Mặt A và Mặt B." } },
-    { id: 2, img: "/tutorial/mirror/b2.jpg", text: { zh: "將鐵片有凹槽的面朝下放置到A邊。", en: "Place the metal sheet with the groove facing down onto Side A.", vn: "Đặt tấm kim loại với mặt có rãnh hướng xuống vào Mặt A." } },
-    { id: 3, img: "/tutorial/mirror/b3.gif", text: { zh: "先放入徽章圖片，再放入放入透明片。", en: "First insert the badge image, then insert the transparent film.", vn: "Đầu tiên đặt hình ảnh huy hiệu vào, sau đó đặt tấm phim trong suốt vào." } },
-    { id: 4, img: "/tutorial/mirror/b4.jpg", text: { zh: "輕輕向右推到底。", en: "Gently push all the way to the right.", vn: "Nhẹ nhàng đẩy sang phải cho đến khi chạm hết." } },
-    { id: 5, img: "/tutorial/mirror/b5.jpg", text: { zh: "在B邊放入鐵環墊片。", en: "Place the iron ring gasket onto Side B.", vn: "Đặt vòng đệm sắt vào Mặt B." } },
-    { id: 6, img: "/tutorial/mirror/b6.jpg", text: { zh: "放入金屬鏡框，鋒利面朝上。", en: "Insert the metal mirror frame, sharp side facing up.", vn: "Đặt khung gương kim loại vào, mặt sắc nhọn hướng lên." } },
-    { id: 7, img: "/tutorial/mirror/b7.jpg", text: { zh: "放入鏡面(鏡面朝下)。", en: "Insert the mirror surface (mirror surface facing down).", vn: "Đặt mặt gương vào (mặt gương hướng xuống)." } },
-    { id: 8, img: "/tutorial/mirror/b8.jpg", text: { zh: "向A邊壓到底。", en: "Press down completely onto Side A.", vn: "Nhấn hoàn toàn xuống Mặt A." } },
-    { id: 9, img: "/tutorial/mirror/b9.gif", text: { zh: "向左輕推到底，向B邊壓到底。", en: "Gently push all the way to the left, then press down completely onto Side B.", vn: "Nhẹ nhàng đẩy sang trái cho đến khi chạm hết, sau đó nhấn hoàn toàn xuống Mặt B." } },
-    { id: 10, img: "/tutorial/mirror/b10.jpg", text: { zh: "鏡子就完成啦！", en: "The mirror is finished!", vn: "Gương đã hoàn thành!" } },
+    { id: 1, img: "/tutorial/mirror/b1.jpg", text: { zh: "徽章機有分A邊跟B邊。", en: "The badge machine is divided into Side A and Side B.", vn: "Máy làm huy hiệu được chia thành Mặt A và Mặt B.", id: "Mesin ini memiliki sisi A dan sisi B." } },
+    { id: 2, img: "/tutorial/mirror/b2.jpg", text: { zh: "將鐵片有凹槽的面朝下放置到A邊。", en: "Place the metal sheet with the groove facing down onto Side A.", vn: "Đặt tấm kim loại với mặt có rãnh hướng xuống vào Mặt A.", id: "Letakkan plat besi dengan sisi cekung menghadap ke bawah pada sisi A." } },
+    { id: 3, img: "/tutorial/mirror/b3.gif", text: { zh: "先放入徽章圖片，再放入放入透明片。", en: "First insert the badge image, then insert the transparent film.", vn: "Đầu tiên đặt hình ảnh huy hiệu vào, sau đó đặt tấm phim trong suốt vào.", id: "Masukkan gambar, lalu letakkan plastik bening di atasnya." } },
+    { id: 4, img: "/tutorial/mirror/b4.jpg", text: { zh: "輕輕向右推到底。", en: "Gently push all the way to the right.", vn: "Nhẹ nhàng đẩy sang phải cho đến khi chạm hết.", id: "Geser cetakan ke kanan secara perlahan sampai mentok." } },
+    { id: 5, img: "/tutorial/mirror/b5.jpg", text: { zh: "在B邊放入鐵環墊片。", en: "Place the iron ring gasket onto Side B.", vn: "Đặt vòng đệm sắt vào Mặt B.", id: "Masukkan ring ganjal (washer) pada sisi B." } },
+    { id: 6, img: "/tutorial/mirror/b6.jpg", text: { zh: "放入金屬鏡框，鋒利面朝上。", en: "Insert the metal mirror frame, sharp side facing up.", vn: "Đặt khung gương kim loại vào, mặt sắc nhọn hướng lên.", id: "Masukkan bingkai besi, sisi tajam menghadap ke atas." } },
+    { id: 7, img: "/tutorial/mirror/b7.jpg", text: { zh: "放入鏡面(鏡面朝下)。", en: "Insert the mirror surface (mirror surface facing down).", vn: "Đặt mặt gương vào (mặt gương hướng xuống).", id: "Masukkan cermin (kaca menghadap ke bawah)." } },
+    { id: 8, img: "/tutorial/mirror/b8.jpg", text: { zh: "向A邊壓到底。", en: "Press down completely onto Side A.", vn: "Nhấn hoàn toàn xuống Mặt A.", id: "Tekan tuas pada sisi A ke bawah sampai mentok." } },
+    { id: 9, img: "/tutorial/mirror/b9.gif", text: { zh: "向左輕推到底，向B邊壓到底。", en: "Gently push all the way to the left, then press down completely onto Side B.", vn: "Nhẹ nhàng đẩy sang trái cho đến khi chạm hết, sau đó nhấn hoàn toàn xuống Mặt B.", id: "Geser ke kiri sampai mentok, lalu tekan tuas sisi B ke bawah sampai mentok." } },
+    { id: 10, img: "/tutorial/mirror/b10.jpg", text: { zh: "鏡子就完成啦！", en: "The mirror is finished!", vn: "Gương đã hoàn thành!", id: "Cermin saku sudah jadi!" } },
   ],
   magnet: [
-    { id: 1, img: "/tutorial/magnet/c1.jpg", text: { zh: "徽章機有分A邊跟B邊。", en: "The badge machine is divided into Side A and Side B.", vn: "Máy làm huy hiệu được chia thành Mặt A và Mặt B." } },
-    { id: 2, img: "/tutorial/magnet/c2.jpg", text: { zh: "將鐵片有凹槽的面朝下放置到A邊。", en: "Place the metal sheet with the groove facing down onto Side A.", vn: "Đặt tấm kim loại với mặt có rãnh hướng xuống vào Mặt A." } },
-    { id: 3, img: "/tutorial/magnet/c3.gif", text: { zh: "先放入徽章圖片，再放入放入透明片。", en: "First insert the badge image, then insert the transparent film.", vn: "Đầu tiên đặt hình ảnh huy hiệu vào, sau đó đặt tấm phim trong suốt vào." } },
-    { id: 4, img: "/tutorial/magnet/c4.jpg", text: { zh: "輕輕向右推到底。", en: "Gently push all the way to the right.", vn: "Nhẹ nhàng đẩy sang phải cho đến khi chạm hết." } },
-    { id: 5, img: "/tutorial/magnet/c5.jpg", text: { zh: "在B邊放入鐵環墊片。", en: "Place the iron ring gasket onto Side B.", vn: "Đặt vòng đệm sắt vào Mặt B." } },
-    { id: 6, img: "/tutorial/magnet/c6.jpg", text: { zh: "放入磁吸鐵片，(磁吸面朝下)。", en: "Insert the magnetic metal sheet (magnetic side facing down).", vn: "Đặt tấm kim loại từ tính vào (mặt từ tính hướng xuống)." } },
-    { id: 7, img: "/tutorial/magnet/c7.jpg", text: { zh: "向A邊壓到底。", en: "Press down completely onto Side A.", vn: "Nhấn hoàn toàn xuống Mặt A." } },
-    { id: 8, img: "/tutorial/magnet/c8.gif", text: { zh: "向左輕推到底，向B邊壓到底。", en: "Gently push all the way to the left, then press down completely onto Side B.", vn: "Nhẹ nhàng đẩy sang trái cho đến khi chạm hết, sau đó nhấn hoàn toàn xuống Mặt B." } },
-    { id: 9, img: "/tutorial/magnet/c9.jpg", text: { zh: "冰箱貼就做好啦！", en: "The refrigerator magnet is finished!", vn: "Nam châm tủ lạnh đã hoàn thành!" } },
+    { id: 1, img: "/tutorial/magnet/c1.jpg", text: { zh: "徽章機有分A邊跟B邊。", en: "The badge machine is divided into Side A and Side B.", vn: "Máy làm huy hiệu được chia thành Mặt A và Mặt B.", id: "Mesin ini memiliki sisi A dan sisi B." } },
+    { id: 2, img: "/tutorial/magnet/c2.jpg", text: { zh: "將鐵片有凹槽的面朝下放置到A邊。", en: "Place the metal sheet with the groove facing down onto Side A.", vn: "Đặt tấm kim loại với mặt có rãnh hướng xuống vào Mặt A.", id: "Letakkan plat besi dengan sisi cekung menghadap ke bawah pada sisi A." } },
+    { id: 3, img: "/tutorial/magnet/c3.gif", text: { zh: "先放入徽章圖片，再放入放入透明片。", en: "First insert the badge image, then insert the transparent film.", vn: "Đầu tiên đặt hình ảnh huy hiệu vào, sau đó đặt tấm phim trong suốt vào.", id: "Masukkan gambar, lalu letakkan plastik bening di atasnya." } },
+    { id: 4, img: "/tutorial/magnet/c4.jpg", text: { zh: "輕輕向右推到底。", en: "Gently push all the way to the right.", vn: "Nhẹ nhàng đẩy sang phải cho đến khi chạm hết.", id: "Geser cetakan ke kanan secara perlahan sampai mentok." } },
+    { id: 5, img: "/tutorial/magnet/c5.jpg", text: { zh: "在B邊放入鐵環墊片。", en: "Place the iron ring gasket onto Side B.", vn: "Đặt vòng đệm sắt vào Mặt B.", id: "Masukkan ring ganjal (washer) pada sisi B." } },
+    { id: 6, img: "/tutorial/magnet/c6.jpg", text: { zh: "放入磁吸鐵片，(磁吸面朝下)。", en: "Insert the magnetic metal sheet (magnetic side facing down).", vn: "Đặt tấm kim loại từ tính vào (mặt từ tính hướng xuống).", id: "Masukkan plat magnet (sisi magnet menghadap ke bawah)." } },
+    { id: 7, img: "/tutorial/magnet/c7.jpg", text: { zh: "向A邊壓到底。", en: "Press down completely onto Side A.", vn: "Nhấn hoàn toàn xuống Mặt A.", id: "Tekan tuas pada sisi A ke bawah sampai mentok." } },
+    { id: 8, img: "/tutorial/magnet/c8.gif", text: { zh: "向左輕推到底，向B邊壓到底。", en: "Gently push all the way to the left, then press down completely onto Side B.", vn: "Nhẹ nhàng đẩy sang trái cho đến khi chạm hết, sau đó nhấn hoàn toàn xuống Mặt B.", id: "Geser ke kiri sampai mentok, lalu tekan tuas sisi B ke bawah sampai mentok." } },
+    { id: 9, img: "/tutorial/magnet/c9.jpg", text: { zh: "冰箱貼就做好啦！", en: "The refrigerator magnet is finished!", vn: "Nam châm tủ lạnh đã hoàn thành!", id: "Tempelan kulkas sudah jadi!" } },
   ]
 };
 
-interface WorkshopTutorialProps {
-    mode: TutorialType;
+interface BadgeTutorialProps {
+    mode?: TutorialType; // Made optional to support old usage, but defaults to 'badge'
     onFinish?: () => void;
 }
 
-export const WorkshopTutorial: React.FC<WorkshopTutorialProps> = ({ mode, onFinish }) => {
+export const BadgeTutorial: React.FC<BadgeTutorialProps> = ({ mode = 'badge', onFinish }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [lang, setLang] = useState<'zh' | 'en' | 'vn'>('zh');
+  const [lang, setLang] = useState<'zh' | 'en' | 'vn' | 'id'>('zh');
   const { playSound } = useSound();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -175,7 +174,7 @@ export const WorkshopTutorial: React.FC<WorkshopTutorialProps> = ({ mode, onFini
             </div>
             
             {/* Language Toggle */}
-            <div className="flex bg-white rounded-lg p-1 shadow-sm border border-indigo-100">
+            <div className="flex bg-white rounded-lg p-1 shadow-sm border border-indigo-100 flex-wrap gap-1">
             <button 
                 onClick={() => { setLang('zh'); playSound('click'); }} 
                 className={`px-3 py-1 text-sm rounded-md transition-colors font-bold ${lang === 'zh' ? 'bg-indigo-600 text-white' : 'text-gray-500 hover:bg-gray-100'}`}
@@ -186,13 +185,19 @@ export const WorkshopTutorial: React.FC<WorkshopTutorialProps> = ({ mode, onFini
                 onClick={() => { setLang('en'); playSound('click'); }} 
                 className={`px-3 py-1 text-sm rounded-md transition-colors font-bold ${lang === 'en' ? 'bg-indigo-600 text-white' : 'text-gray-500 hover:bg-gray-100'}`}
             >
-                English
+                EN
             </button>
             <button 
                 onClick={() => { setLang('vn'); playSound('click'); }} 
                 className={`px-3 py-1 text-sm rounded-md transition-colors font-bold ${lang === 'vn' ? 'bg-indigo-600 text-white' : 'text-gray-500 hover:bg-gray-100'}`}
             >
-                Tiếng Việt
+                VN
+            </button>
+            <button 
+                onClick={() => { setLang('id'); playSound('click'); }} 
+                className={`px-3 py-1 text-sm rounded-md transition-colors font-bold ${lang === 'id' ? 'bg-indigo-600 text-white' : 'text-gray-500 hover:bg-gray-100'}`}
+            >
+                Bahasa
             </button>
             </div>
         </div>
@@ -224,7 +229,7 @@ export const WorkshopTutorial: React.FC<WorkshopTutorialProps> = ({ mode, onFini
                     </div>
                     
                     <div className="bg-indigo-50/50 p-6 rounded-2xl border border-indigo-100 min-h-[120px] flex items-center">
-                        <p className={`text-xl md:text-2xl font-bold leading-relaxed w-full ${lang === 'vn' ? 'italic text-indigo-800' : 'text-slate-800'}`}>
+                        <p className={`text-xl md:text-2xl font-bold leading-relaxed w-full ${lang === 'vn' || lang === 'id' ? 'italic text-indigo-800' : 'text-slate-800'}`}>
                             {currentData.text[lang]}
                         </p>
                     </div>
